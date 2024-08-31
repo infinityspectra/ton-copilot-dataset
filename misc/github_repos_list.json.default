@@ -1,0 +1,12 @@
+[
+  {
+    "name": ".github",
+    "fullName": "ton-community/.github",
+    "url": "https://github.com/ton-community/.github.git"
+  },
+  {
+    "name": "assets-sdk",
+    "fullName": "ton-community/assets-sdk",
+    "url": "https://github.com/ton-community/assets-sdk.git"
+  }
+]

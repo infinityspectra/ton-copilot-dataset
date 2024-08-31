@@ -4,6 +4,90 @@
 
 TON Copilot Dataset is an initiative to create a comprehensive and continuously updated dataset for training Large Language Models (LLMs) specialized in the Telegram Open Network (TON) ecosystem. This dataset aims to serve as a foundation for developing AI-powered assistants and tools that can effectively support developers, users, and enthusiasts within the TON ecosystem.
 
+## Installation and Usage
+
+### Prerequisites
+
+- Node.js (version 14 or later)
+- npm (usually comes with Node.js)
+- Git
+
+### Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/your-username/ton-copilot-dataset.git
+   cd ton-copilot-dataset
+   ```
+
+2. Install dependencies:
+   ```
+   npm install
+   ```
+
+3. Build the project:
+   ```
+   npm run build
+   ```
+
+### Setting up Environment Variables
+
+This project uses environment variables for configuration. Follow these steps to set up your environment:
+
+1. Create a `.env` file in the root directory of the project.
+
+2. Add your GitHub personal access token to the `.env` file:
+
+   ```
+   GITHUB_TOKEN=your_github_personal_access_token_here
+   ```
+
+   Replace `your_github_personal_access_token_here` with your actual GitHub token.
+
+### Usage
+
+#### Listing Repositories
+
+To list repositories for GitHub accounts:
+
+1. Create a file named `github_account_list.txt` in the project root directory. Add GitHub account names (users or organizations), one per line.
+
+2. Run the following command:
+   ```
+   npm run list-repos
+   ```
+
+   This will generate a list of repositories in `./misc/github_repos_list.json`.
+
+#### Cloning Repositories
+
+To clone the repositories:
+
+1. Ensure you have a JSON file with the repository information (e.g., `github_repos_list.json`).
+
+2. Run the following command:
+   ```
+   npm run clone-repos -- /path/to/your/github_repos_list.json -o ./cloned_repos
+   ```
+
+   Replace `/path/to/your/github_repos_list.json` with the actual path to your JSON file.
+
+   This will clone the repositories into the `./cloned_repos` directory, organized by account name.
+
+### Additional Commands
+
+- Format code:
+  ```
+  npm run format
+  ```
+
+- Check code formatting:
+  ```
+  npm run format:check
+  ```
+
+For more detailed information about each command, refer to the source code or run the command with the `--help` flag.
+
 ## Key Features
 
 1. Multi-source Data Collection
