@@ -102,3 +102,4 @@ cloned_repos/
 misc/*
 !misc/github_accounts_list.txt.default
 !misc/github_repos_list.json.default
+!misc/ignored_repos_list.txt.default
