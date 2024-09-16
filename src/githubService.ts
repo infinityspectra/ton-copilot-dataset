@@ -39,7 +39,11 @@ export async function cloneRepos(repos: Repo[], outputDir: string): Promise<void
     const repoPath = path.join(outputDir, repo.name);
     if (!fs.existsSync(repoPath)) {
       console.log(`Cloning ${repo.fullName}...`);
-      await git.clone(repo.url, repoPath);
+      await git.clone(repo.url, repoPath, ['--branch', 'main', '--single-branch'])
+        .catch(async () => {
+          console.log(`Main branch not found for ${repo.fullName}, trying master...`);
+          await git.clone(repo.url, repoPath, ['--branch', 'master', '--single-branch']);
+        });
     } else {
       console.log(`${repo.name} already exists, skipping...`);
     }
