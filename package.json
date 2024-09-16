@@ -5,8 +5,8 @@
   "scripts": {
     "start": "tsc && node dist/index.js",
     "build": "tsc",
-    "list-repos": "node dist/index.js list-repos",
-    "clone-repos": "node dist/index.js clone-repos",
+    "list-repos": "tsc && node dist/index.js list-repos",
+    "clone-repos": "tsc && node dist/index.js clone-repos",
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\""
   },

@@ -43,10 +43,11 @@ program
 
 program
   .command('clone-repos')
-  .description('Clone repositories from a JSON file')
+  .description('Clone repositories from a JSON file. Example usage: node dist/index.js clone-repos repos.json ignored_repos.txt -o ./output_directory')
   .argument('<file>', 'JSON file containing repository information')
+  .argument('<ignoredReposFile>', 'Text file containing list of repositories to ignore')
   .option('-o, --output <directory>', 'Output directory for cloned repos', './cloned_repos')
-  .action(async (file: string, options: { output: string }) => {
+  .action(async (file: string, ignoredReposFile: string, options: { output: string }) => {
     try {
       console.log(`Reading file: ${file}`);
       const content = fs.readFileSync(file, 'utf-8');
@@ -64,11 +65,24 @@ program
         throw new Error('Invalid JSON format. Expected an array of repositories.');
       }
 
-      const repos: Repo[] = reposData.map((repo) => ({
-        name: repo.name,
-        fullName: repo.fullName,
-        url: repo.url,
-      }));
+      console.log(`Reading ignored repositories file: ${ignoredReposFile}`);
+      const ignoredReposContent = fs.readFileSync(ignoredReposFile, 'utf-8');
+      const ignoredRepos = new Set(ignoredReposContent.split('\n').filter(Boolean));
+      console.log('Ignored repositories read successfully');
+
+      const repos: Repo[] = reposData
+        .filter((repo) => {
+          if (ignoredRepos.has(repo.url)) {
+            console.log(`Ignored repository: ${repo.url}`);
+            return false;
+          }
+          return true;
+        })
+        .map((repo) => ({
+          name: repo.name,
+          fullName: repo.fullName,
+          url: repo.url,
+        }));
 
       console.log(`Cloning ${repos.length} repositories...`);
 

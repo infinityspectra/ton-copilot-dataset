@@ -38,11 +38,21 @@ export async function cloneRepos(repos: Repo[], outputDir: string): Promise<void
   for (const repo of repos) {
     const repoPath = path.join(outputDir, repo.name);
     if (!fs.existsSync(repoPath)) {
+      console.log(`Checking size of ${repo.fullName}...`);
+      const { data: repoDetails } = await octokit.repos.get({
+        owner: repo.fullName.split('/')[0],
+        repo: repo.name,
+      });
+
+      if (repoDetails.size > 500000) { // size is in KB, so 500000 KB = 500 MB
+        console.log(`Skipping ${repo.fullName} due to size > 500MB`);
+        continue;
+      }
+
       console.log(`Cloning ${repo.fullName}...`);
-      await git.clone(repo.url, repoPath, ['--branch', 'main', '--single-branch'])
-        .catch(async () => {
-          console.log(`Main branch not found for ${repo.fullName}, trying master...`);
-          await git.clone(repo.url, repoPath, ['--branch', 'master', '--single-branch']);
+      await git.clone(repo.url, repoPath)
+        .catch(async (err) => {
+          console.log(`Failed to clone ${repo.fullName}: ${err.message}`);
         });
     } else {
       console.log(`${repo.name} already exists, skipping...`);
